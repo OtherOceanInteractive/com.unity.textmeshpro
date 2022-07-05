@@ -18,7 +18,9 @@ namespace TMPro
     /// <summary>
     /// Editable text input field.
     /// </summary>
-    [AddComponentMenu("UI/TextMeshPro - Input Field", 11)]
+    // OOI_CC begin
+    [AddComponentMenu("UI/TextMeshPro/Input Field - TextMeshPro", 11)]
+    // OOI_CC end
     public class TMP_InputField : Selectable,
         IUpdateSelectedHandler,
         IBeginDragHandler,
@@ -202,6 +204,14 @@ namespace TMPro
         /// </summary>
         [SerializeField]
         private int m_CharacterLimit = 0;
+
+        // OOI_CC begin
+        /// <summary>
+        /// Event delegates triggered when the input field activates input mode.
+        /// </summary>
+        [SerializeField]
+        private SubmitEvent m_OnStartEdit = new SubmitEvent();
+        // OOI_CC end
 
         /// <summary>
         /// Event delegates triggered when the input field submits its data.
@@ -659,6 +669,9 @@ namespace TMPro
 
         public Color selectionColor { get { return m_SelectionColor; } set { if (SetPropertyUtility.SetColor(ref m_SelectionColor, value)) MarkGeometryAsDirty(); } }
 
+        // OOI_CC begin
+        public SubmitEvent onStartEdit { get { return m_OnStartEdit; } set { SetPropertyUtility.SetClass(ref m_OnStartEdit, value); } }
+        // OOI_CC end
         public SubmitEvent onEndEdit { get { return m_OnEndEdit; } set { SetPropertyUtility.SetClass(ref m_OnEndEdit, value); } }
 
         public SubmitEvent onSubmit { get { return m_OnSubmit; } set { SetPropertyUtility.SetClass(ref m_OnSubmit, value); } }
@@ -2038,12 +2051,16 @@ namespace TMPro
                         break;
                     }
 
+                // OOI_CC begin
+                // SA: This is commented out so that Canceling out is controlled by our code instead. 
                 case KeyCode.Escape:
                     {
-                        m_ReleaseSelection = true;
-                        m_WasCanceled = true;
-                        return EditState.Finish;
+                        //m_ReleaseSelection = true;
+                        //m_WasCanceled = true;
+                        //return EditState.Finish;
+                        break;
                     }
+                    // OOI_CC end
             }
 
             char c = evt.character;
@@ -3139,10 +3156,15 @@ namespace TMPro
                 onValueChanged.Invoke(text);
         }
 
+        protected void SendOnStartEdit()
+        {
+            if (onStartEdit != null)
+                onStartEdit.Invoke(m_Text);
+        }
+
         /// <summary>
         /// Submit the input field's text.
         /// </summary>
-
         protected void SendOnEndEdit()
         {
             if (onEndEdit != null)
@@ -4106,6 +4128,9 @@ namespace TMPro
             m_AllowInput = true;
             m_OriginalText = text;
             m_WasCanceled = false;
+            // OOI_CC begin
+            SendOnStartEdit();
+            // OOI_CC end
             SetCaretVisible();
             UpdateLabel();
         }
@@ -4117,7 +4142,9 @@ namespace TMPro
             base.OnSelect(eventData);
             SendOnFocus();
 
-            ActivateInputField();
+            // OOI_CC begin
+            //ActivateInputField();
+            // OOI_CC end
         }
 
         public virtual void OnPointerClick(PointerEventData eventData)
@@ -4207,7 +4234,9 @@ namespace TMPro
                 return;
 
             if (!isFocused)
-                m_ShouldActivateNextUpdate = true;
+                // OOI_CC begin
+                ActivateInputField();
+                // OOI_CC end
 
             SendOnSubmit();
         }

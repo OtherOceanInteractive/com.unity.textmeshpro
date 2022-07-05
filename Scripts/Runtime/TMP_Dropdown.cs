@@ -9,7 +9,9 @@ using UnityEngine.UI.CoroutineTween;
 
 namespace TMPro
 {
-    [AddComponentMenu("UI/Dropdown - TextMeshPro", 35)]
+    // OOI_CC begin
+    [AddComponentMenu("UI/TextMeshPro/Dropdown - TextMeshPro", 35)]
+    // OOI_CC end
     [RequireComponent(typeof(RectTransform))]
     /// <summary>
     ///   A standard dropdown that presents a list of options when clicked, of which one can be chosen.
@@ -292,6 +294,16 @@ namespace TMPro
         [SerializeField]
         private DropdownEvent m_OnValueChanged = new DropdownEvent();
 
+        // OOI_CC begin
+        // Notification triggered when the dropdown is shown.
+        [SerializeField]
+        private UnityEvent m_OnDropdownShown = new UnityEvent();
+
+        // Notification triggered when the dropdown is hidden.
+        [SerializeField]
+        private UnityEvent m_OnDropdownHidden = new UnityEvent();
+        // OOI_CC end
+
         /// <summary>
         /// A UnityEvent that is invoked when a user has clicked one of the options in the dropdown list.
         /// </summary>
@@ -334,6 +346,11 @@ namespace TMPro
         /// </code>
         /// </example>
         public DropdownEvent onValueChanged { get { return m_OnValueChanged; } set { m_OnValueChanged = value; } }
+
+        // OOI_CC begin
+        public UnityEvent onDropdownShown { get { return m_OnDropdownShown; } set { m_OnDropdownShown = value; } }
+        public UnityEvent onDropdownHidden { get { return m_OnDropdownHidden; } set { m_OnDropdownHidden = value; } }
+        // OOI_CC end
 
         [SerializeField]
         private float m_AlphaFadeSpeed = 0.15f;
@@ -893,6 +910,10 @@ namespace TMPro
             itemTemplate.gameObject.SetActive(false);
 
             m_Blocker = CreateBlocker(rootCanvas);
+
+            // OOI_CC begin
+            m_OnDropdownShown.Invoke();
+            // OOI_CC end
         }
 
         /// <summary>
@@ -1100,7 +1121,11 @@ namespace TMPro
                     DestroyBlocker(m_Blocker);
 
                 m_Blocker = null;
-                Select();
+                // OOI_CC begin
+                // SA: for TWD, we're letting this get handled outside. 
+                // Select();
+                m_OnDropdownHidden.Invoke();
+                // OOI_CC end
             }
         }
 

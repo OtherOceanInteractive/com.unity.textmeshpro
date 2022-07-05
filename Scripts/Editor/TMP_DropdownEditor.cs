@@ -16,6 +16,10 @@ namespace TMPro.EditorUtilities
         SerializedProperty m_ItemText;
         SerializedProperty m_ItemImage;
         SerializedProperty m_OnSelectionChanged;
+        // OOI_CC begin
+        SerializedProperty m_OnDropdownShown;
+        SerializedProperty m_OnDropdownHidden;
+        // OOI_CC end
         SerializedProperty m_Value;
         SerializedProperty m_AlphaFadeSpeed;
         SerializedProperty m_Options;
@@ -30,6 +34,10 @@ namespace TMPro.EditorUtilities
             m_ItemText = serializedObject.FindProperty("m_ItemText");
             m_ItemImage = serializedObject.FindProperty("m_ItemImage");
             m_OnSelectionChanged = serializedObject.FindProperty("m_OnValueChanged");
+            // OOI_CC begin
+            m_OnDropdownShown = serializedObject.FindProperty("m_OnDropdownShown");
+            m_OnDropdownHidden = serializedObject.FindProperty("m_OnDropdownHidden");
+            // OOI_CC end
             m_Value = serializedObject.FindProperty("m_Value");
             m_AlphaFadeSpeed = serializedObject.FindProperty("m_AlphaFadeSpeed");
             m_Options = serializedObject.FindProperty("m_Options");
@@ -51,6 +59,10 @@ namespace TMPro.EditorUtilities
             EditorGUILayout.PropertyField(m_AlphaFadeSpeed);
             EditorGUILayout.PropertyField(m_Options);
             EditorGUILayout.PropertyField(m_OnSelectionChanged);
+            // OOI_CC begin
+            EditorGUILayout.PropertyField(m_OnDropdownShown);
+            EditorGUILayout.PropertyField(m_OnDropdownHidden);
+            // OOI_CC end
             serializedObject.ApplyModifiedProperties();
         }
     }

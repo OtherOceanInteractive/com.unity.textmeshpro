@@ -43,6 +43,9 @@ namespace TMPro.EditorUtilities
         SerializedProperty m_VerticalScrollbar;
         SerializedProperty m_ScrollbarScrollSensitivity;
         SerializedProperty m_OnValueChanged;
+        // OOI_CC begin
+        SerializedProperty m_OnStartEdit;
+        // OOI_CC end
         SerializedProperty m_OnEndEdit;
         SerializedProperty m_OnSelect;
         SerializedProperty m_OnDeselect;
@@ -90,6 +93,9 @@ namespace TMPro.EditorUtilities
             m_ScrollbarScrollSensitivity = serializedObject.FindProperty("m_ScrollSensitivity");
 
             m_OnValueChanged = serializedObject.FindProperty("m_OnValueChanged");
+            // OOI_CC begin
+            m_OnStartEdit = serializedObject.FindProperty("m_OnStartEdit");
+            // OOI_CC end
             m_OnEndEdit = serializedObject.FindProperty("m_OnEndEdit");
             m_OnSelect = serializedObject.FindProperty("m_OnSelect");
             m_OnDeselect = serializedObject.FindProperty("m_OnDeselect");
@@ -271,6 +277,9 @@ namespace TMPro.EditorUtilities
             EditorGUILayout.Space();
 
             EditorGUILayout.PropertyField(m_OnValueChanged);
+            // OOI_CC begin
+            EditorGUILayout.PropertyField(m_OnStartEdit);
+            // OOI_CC end
             EditorGUILayout.PropertyField(m_OnEndEdit);
             EditorGUILayout.PropertyField(m_OnSelect);
             EditorGUILayout.PropertyField(m_OnDeselect);
